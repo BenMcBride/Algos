@@ -31,6 +31,12 @@ const expected6 = 21;
  * @param {number} num The position of the desired number in the fibonacci sequence.
  * @returns {number} The fibonacci number at the given position.
  */
+
+
+var dict = {
+  0: 0,
+  1: 1
+}
 function fibonacci(num) {
   if (num === 0) {
     return 0
@@ -38,6 +44,23 @@ function fibonacci(num) {
   else if (num <= 2) {
     return 1
   }
-  return fibonacci(num - 1) + fibonacci(num - 2)
+  if(dict[num] == undefined){
+    dict[num] = fibonacci(num - 1) + fibonacci(num - 2)
+  }
+  return dict[num]
 }
-console.log(fibonacci(2));
+console.log(fibonacci(5000));
+
+
+
+
+// function fibonacci(num) {
+//   if (num === 0) {
+//     return 0
+//   }
+//   else if (num <= 2) {
+//     return 1
+//   }
+//   return fibonacci(num - 1) + fibonacci(num - 2)
+// }
+// console.log(fibonacci(42));

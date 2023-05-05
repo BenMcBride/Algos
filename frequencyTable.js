@@ -31,7 +31,6 @@ const expected3 = {};
 
 function makeFrequencyTable(arr) {
   var result = {}
-  var count = 1
   for(var i = 0; i < arr.length; i++){
     var value = arr[i];
     if (result[value] === undefined){

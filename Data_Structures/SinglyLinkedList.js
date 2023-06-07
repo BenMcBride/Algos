@@ -74,7 +74,6 @@ class SinglyLinkedList {
     return removedData;
   }
 
-  // EXTRA
   /**
    * Calculates the average of this list.
    * - Time: (?).
@@ -129,6 +128,82 @@ class SinglyLinkedList {
   }
 
   /**
+   * Removes the last node of this list.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @returns {any} The data from the node that was removed.
+   */
+  removeBack() {
+    if (this.isEmpty()) {
+      return null;
+    }
+    let current = this.head;
+    while (current.next.next) {
+      current = current.next;
+    }
+    const data = current.next.data;
+    current.next = null;
+    return data;
+  }
+
+  /**
+   * Determines whether or not the given search value exists in this list.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {any} val The data to search for in the nodes of this list.
+   * @returns {boolean}
+   */
+  contains(val) {
+    if (this.isEmpty()) {
+      return false;
+    }
+    let current = this.head;
+    while (current != null && current.data != val) {
+      current = current.next;
+    }
+    return current !== null;
+  }
+
+  /**
+   * Determines whether or not the given search value exists in this list.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {any} val The data to search for in the nodes of this list.
+   * @param {?ListNode} current The current node during the traversal of this list
+   *    or null when the end of the list has been reached.
+   * @returns {boolean}
+   */
+  containsRecursive(val, current = this.head) {
+    if (current == null) {
+      return false;
+    }
+    if (current.data === val) {
+      return true;
+    }
+    return this.containsRecursive(val, current.next);
+  }
+
+  /**
+   * Recursively finds the maximum integer data of the nodes in this list.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {ListNode} runner The start or current node during traversal, or null
+   *    when the end of the list is reached.
+   * @param {ListNode} maxNode Keeps track of the node that contains the current
+   *    max integer as it's data.
+   * @returns {?number} The max int or null if none.
+   */
+  recursiveMax(runner = this.head, maxNode = this.head) {
+    if (runner == null) {
+      return maxNode.data;
+    }
+    if (runner.data > maxNode.data) {
+      maxNode = runner;
+    }
+    return this.recursiveMax(runner.next, maxNode);
+  }
+
+  /**
    * Creates a new node with the given data and inserts it at the back of
    * this list.
    * - Time: O(?).
@@ -138,7 +213,17 @@ class SinglyLinkedList {
    *    or null when the end of the list has been reached.
    * @returns {SinglyLinkedList} This list.
    */
-  insertAtBackRecursive(data, runner = this.head) {}
+  insertAtBackRecursive(data, runner = this.head) {
+    if (this.isEmpty()) {
+      this.head = new ListNode(data);
+      return this;
+    }
+    if (runner.next == null) {
+      runner.next = new ListNode(data);
+      return this;
+    }
+    return this.insertAtBackRecursive(data, runner.next);
+  }
 
   /**
    * Calls insertAtBack on each item of the given array.
@@ -163,7 +248,6 @@ class SinglyLinkedList {
   toArr() {
     const arr = [];
     let runner = this.head;
-
     while (runner) {
       arr.push(runner.data);
       runner = runner.next;
@@ -187,7 +271,8 @@ const unorderedList = new SinglyLinkedList().insertAtBackMany([
   -5, -10, 4, -3, 6, 1, -7, -2,
 ]);
 
-console.log(unorderedList.removeHead());
+console.log(unorderedList.recursiveMax());
+console.log(unorderedList.toArr());
 
 /* node 4 connects to node 1, back to head */
 // const perfectLoopList = new SinglyLinkedList().insertAtBackMany([1, 2, 3, 4]);

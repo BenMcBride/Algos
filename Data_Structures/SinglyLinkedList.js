@@ -40,6 +40,108 @@ class SinglyLinkedList {
     this.head = null;
   }
 
+  // ------------------------------------------------------------------------------------
+
+  /**
+   * Retrieves the data of the second to last node in this list.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @returns {any} The data of the second to last node or null if there is no
+   *    second to last node.
+   */
+  secondToLast() {
+    if (this.isEmpty() || this.head.next === null) {
+      return null;
+    }
+    let current = this.head;
+    while (current.next.next !== null) {
+      current = current.next;
+    }
+    return current.data;
+  }
+
+  /**
+   * Removes the node that has the matching given val as it's data.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {any} val The value to compare to the node's data to find the
+   *    node to be removed.
+   * @returns {boolean} Indicates if a node was removed or not.
+   */
+  removeVal(val) {
+    if (this.isEmpty()) {
+      return false;
+    }
+    if (this.head.data === val) {
+      this.head = this.head.next;
+      return true;
+    }
+    let current = this.head;
+    while (current.next !== null) {
+      if (current.next.data === val) {
+        current.next = current.next.next;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // EXTRA
+  /**
+   * Inserts a new node before a node that has the given value as its data.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {any} newVal The value to use for the new node that is being added.
+   * @param {any} targetVal The value to use to find the node that the newVal
+   *    should be inserted in front of.
+   * @returns {boolean} To indicate whether the node was pre-pended or not.
+   */
+  prepend(newVal, targetVal) {
+    const newNode = new ListNode(newVal);
+    if (this.isEmpty()) {
+      return false;
+    }
+    let current = this.head;
+    while (current.next !== null) {
+      if (current.next.data === targetVal) {
+        newNode.next = current.next;
+        current.next = newNode;
+        return true;
+      }
+      current = current.next;
+    }
+    return false;
+  }
+
+  /**
+   * Removes the last node of this list.
+   * - Time: O(n) linear, n = length of list.
+   * - Space: O(1) constant.
+   * @returns {any} The data from the node that was removed.
+   */
+  removeBack() {
+    if (this.isEmpty()) {
+      return null;
+    }
+
+    // Only 1 node.
+    if (this.head.next === null) {
+      return this.removeHead();
+    }
+
+    // More than 1 node.
+    let runner = this.head;
+
+    while (runner.next.next) {
+      runner = runner.next;
+    }
+
+    // after while loop finishes, runner is now at 2nd to last node
+    const removedData = runner.next.data;
+    runner.next = null; // remove it from list
+    return removedData;
+  }
+
   /**
    * Creates a new node with the given data and inserts that node at the front
    * of this list.
@@ -271,7 +373,7 @@ const unorderedList = new SinglyLinkedList().insertAtBackMany([
   -5, -10, 4, -3, 6, 1, -7, -2,
 ]);
 
-console.log(unorderedList.recursiveMax());
+console.log(unorderedList.prepend(9001, 5));
 console.log(unorderedList.toArr());
 
 /* node 4 connects to node 1, back to head */

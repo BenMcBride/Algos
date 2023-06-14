@@ -39,6 +39,67 @@ class BinarySearchTree {
   }
 
   /**
+   * Inserts a new node with the given newVal in the right place to preserver
+   * the order of this tree.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {number} newVal The data to be added to a new node.
+   * @returns {BinarySearchTree} This tree.
+   */
+  insert(newVal) {
+    if (this.root === null) {
+      this.root = new BSTNode(newVal);
+      return this;
+    }
+    let current = this.root;
+    while (current) {
+      if (newVal < current.data) {
+        if (current.left === null) {
+          current.left = new BSTNode(newVal);
+          return this;
+        }
+        current = current.left;
+      } else {
+        if (current.right === null) {
+          current.right = new BSTNode(newVal);
+          return this;
+        }
+        current = current.right;
+      }
+    }
+  }
+
+  /**
+   * Inserts a new node with the given newVal in the right place to preserver
+   * the order of this tree.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {number} newVal The data to be added to a new node.
+   * @param {Node} curr The node that is currently accessed from the tree as
+   *    the tree is being traversed.
+   * @returns {BinarySearchTree} This tree.
+   */
+  insertRecursive(newVal, curr = this.root) {
+    if (curr === null) {
+      this.root = new BSTNode(newVal);
+      return this;
+    }
+    if (newVal < curr.data) {
+      if (curr.left === null) {
+        curr.left = new BSTNode(newVal);
+        return this;
+      }
+      return this.insertRecursive(newVal, curr.left);
+    } else {
+      if (curr.right === null) {
+        curr.right = new BSTNode(newVal);
+        return this;
+      }
+      return this.insertRecursive(newVal, curr.right);
+    }
+  }
+
+  /**
    * Determines if this tree contains the given searchVal.
    * - Time: O(?).
    * - Space: O(?).
@@ -245,27 +306,28 @@ threeLevelTree.root.right.left = new BSTNode(13);
     4    12  18  24  31  44 66  90
 */
 /***************** Uncomment after insert method is created. ****************/
-// const fullTree = new BinarySearchTree();
-// fullTree
-//   .insert(25)
-//   .insert(15)
-//   .insert(10)
-//   .insert(22)
-//   .insert(4)
-//   .insert(12)
-//   .insert(18)
-//   .insert(24)
-//   .insert(50)
-//   .insert(35)
-//   .insert(70)
-//   .insert(31)
-//   .insert(44)
-//   .insert(66)
-//   .insert(90);
+const fullTree = new BinarySearchTree();
+fullTree
+  .insert(25)
+  .insert(15)
+  .insert(10)
+  .insert(22)
+  .insert(4)
+  .insert(12)
+  .insert(18)
+  .insert(24)
+  .insert(50)
+  .insert(35)
+  .insert(70)
+  .insert(31)
+  .insert(44)
+  .insert(66)
+  .insert(90);
 console.log(emptyTree.contains(5));
 console.log(oneNodeTree.contains(5));
 console.log(twoLevelTree.contains(5));
 console.log(threeLevelTree.contains(5));
+console.log(fullTree.contains(5));
 
 console.log("---break---");
 
@@ -273,6 +335,7 @@ console.log(emptyTree.containsRecursive(5));
 console.log(oneNodeTree.containsRecursive(5));
 console.log(twoLevelTree.containsRecursive(5));
 console.log(threeLevelTree.containsRecursive(5));
+console.log(fullTree.containsRecursive(5));
 
 console.log("---break---");
 
@@ -280,3 +343,6 @@ console.log(emptyTree.range());
 console.log(oneNodeTree.range());
 console.log(twoLevelTree.range());
 console.log(threeLevelTree.range());
+console.log(fullTree.range());
+
+fullTree.insertRecursive(5).print();

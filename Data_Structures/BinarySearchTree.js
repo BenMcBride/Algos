@@ -39,6 +39,61 @@ class BinarySearchTree {
   }
 
   /**
+   * Recursively counts the total number of nodes in this tree.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {Node} node The current node during the traversal of this tree.
+   * @returns {number} The total number of nodes.
+   */
+  size(node = this.root) {
+    if (node === null) {
+      return 0;
+    }
+    return 1 + this.size(node.left) + this.size(node.right);
+  }
+
+  /**
+   * Calculates the height of the tree which is based on how many nodes from
+   * top to bottom (whichever side is taller).
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {Node} node The current node during traversal of this tree.
+   * @returns {number} The height of the tree.
+   */
+  height(node = this.root) {
+    if (node === null) {
+      return 0;
+    }
+    const leftHeight = this.height(node.left);
+    const rightHeight = this.height(node.right);
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  /**
+   * Determines if this tree is a full tree. A full tree is a tree where every
+   * node has both a left and a right except for the leaf nodes (last nodes)
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {Node} node The current node during traversal of this tree.
+   * @returns {boolean} Indicates if this tree is full.
+   */
+  isFull(node = this.root) {
+    if (this.isEmpty()) {
+      return false;
+    }
+    if (node === null) {
+      return true;
+    }
+    if (!node.left && !node.right) {
+      return true;
+    }
+    if (!node.left || !node.right) {
+      return false;
+    }
+    return this.isFull(node.left) && this.isFull(node.right);
+  }
+
+  /**
    * DFS Preorder: (CurrNode, Left, Right)
    * Converts this BST into an array following Depth First Search preorder.
    * Example on the fullTree var:
@@ -400,6 +455,10 @@ fullTree
 // console.log(threeLevelTree.range());
 // console.log(fullTree.range());
 
-console.log(fullTree.toArrPreorder());
-console.log(fullTree.toArrInorder());
-console.log(fullTree.toArrPostorder());
+console.log(fullTree.size());
+console.log(fullTree.height());
+console.log(fullTree.isFull());
+
+console.log(emptyTree.size());
+console.log(emptyTree.height());
+console.log(emptyTree.isFull());

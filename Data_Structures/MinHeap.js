@@ -18,16 +18,105 @@ class MinHeap {
   }
 
   /**
+   * Extracts the min num from the heap and then re-orders the heap to
+   * maintain order so the next min is ready to be extracted.
+   * 1. Save the first node to a temp var.
+   * 2. Pop last node off and set idx1 equal to the popped value.
+   * 3. Iteratively swap the old last node that is now at idx1 with it's
+   *    smallest child IF the smallest child is smaller than it.
+   * - Time: O(log n) logarithmic due to shiftDown.
+   * - Space: O(1) constant.
+   * @returns {?number} The min number or null if empty.
+   */
+  extract() {
+    // check if the heap is empty
+    if (this.heap.length <= 1) {
+      return null;
+    }
+    // save the first node to a temporary variable
+    const min = this.heap[1];
+    // replace the root with the last node in the heap
+    let idx1 = this.heap.pop();
+    this.heap[1] = idx1;
+    // swap down the heap to maintain the heap property
+    let idx = 1;
+    while (true) {
+      // calculate the indices of the left and right child nodes
+      const leftIdx = this.idxOfLeftChild(idx);
+      const rightIdx = this.idxOfRightChild(idx);
+      // check if both child indices are out of bounds
+      if (leftIdx >= this.heap.length && rightIdx >= this.heap.length) {
+        break;
+      }
+      // determine the index of the child with the smalles value
+      let minChildIdx = leftIdx;
+      if (
+        rightIdx < this.heap.length &&
+        this.heap[rightIdx] < this.heap[leftIdx]
+      ) {
+        minChildIdx = rightIdx;
+      }
+      // compare the current node with the smallest child
+      if (this.heap[idx] < this.heap[minChildIdx]) {
+        break;
+      }
+      // swap the current node with the smallest child
+      this.swap(idx, minChildIdx);
+      idx = minChildIdx;
+    }
+    // return the minimum value that was initially saved
+    return min;
+  }
+
+  /**
+   * @param {number} i
+   */
+  idxOfParent(i) {
+    return Math.floor(i / 2);
+  }
+
+  /**
+   * @param {number} i
+   */
+  idxOfLeftChild(i) {
+    return i * 2;
+  }
+
+  /**
+   * @param {number} i
+   */
+  idxOfRightChild(i) {
+    return i * 2 + 1;
+  }
+
+  /**
+   * Swaps two nodes.
+   * @param {number} i
+   * @param {number} j
+   */
+  swap(i, j) {
+    [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
+  }
+
+  /**
+   * Retrieves the size of the heap, ignoring the null placeholder.
+   * - Time: O(1) constant.
+   * - Space: O(1) constant.
+   * @returns {number}
+   */
+  size() {
+    // - 1 since 0 index is unused
+    return this.heap.length - 1;
+  }
+
+  /**
    * Retrieves the top (minimum number) in the heap without removing it.
    * - Time: O(1) constant.
    * - Space: O(1) constant.
    * @returns {?number} Null if empty.
    */
   top() {
-    if (this.heap.length > 1) {
-      return this.heap[1];
-    }
-    return null;
+    return this.heap.length > 1 ? this.heap[1] : null;
   }
 
   /**
@@ -81,4 +170,7 @@ console.log(minTree.insert(13));
 console.log(minTree.insert(16));
 console.log(minTree.insert(11));
 console.log(minTree.insert(14));
+console.log(minTree.insert(3));
+console.log(minTree.printHorizontalTree());
+console.log(minTree.extract());
 console.log(minTree.printHorizontalTree());

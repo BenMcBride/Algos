@@ -43,6 +43,77 @@ class SinglyLinkedList {
   // ------------------------------------------------------------------------------------
 
   /**
+   * Reverses this list in-place without using any extra lists.
+   * - Time: (?).
+   * - Space: (?).
+   * @returns {SinglyLinkedList} This list.
+   */
+  reverse() {
+    if (this.isEmpty() || this.head.next === null) {
+      return this;
+    }
+    let prev = null;
+    let current = this.head;
+    let next = null;
+    while (current !== null) {
+      next = current.next; // save the reference to the next node
+      current.next = prev; // reverse the link of the current node
+      prev = current; // move the prev pointer to the current node
+      current = next; // move the current pointer to the next node
+    }
+    this.head = prev; // update the head to the last node (prev)
+    return this;
+  }
+
+  /**
+   * Determines whether the list has a loop in it which would result in
+   * infinitely traversing unless otherwise avoided. A loop is when a node's
+   * next points to a node that is behind it.
+   * - Time: (?).
+   * - Space: (?).
+   * @returns {boolean} Whether the list has a loop or not.
+   */
+  hasLoop() {
+    if (this.isEmpty() || this.head.next === null) {
+      return false;
+    }
+    let runner1 = this.head;
+    let runner2 = this.head.next;
+    while (runner2 !== null && runner2.next !== null) {
+      if (runner1 === runner2) {
+        return true;
+      }
+      runner1 = runner1.next;
+      runner2 = runner2.next.next;
+    }
+    return false;
+  }
+
+  /**
+   * Removes all the nodes that have a negative integer as their data.
+   * - Time: (?).
+   * - Space: (?).
+   * @returns {SinglyLinkedList} This list after the negatives are removed.
+   */
+  removeNegatives() {
+    if (this.isEmpty()) {
+      return this;
+    }
+    while (this.head !== null && this.head.data < 0) {
+      this.head = this.head.next;
+    }
+    let current = this.head;
+    while (current !== null && current.next !== null) {
+      if (current.next.data < 0) {
+        current.next = current.next.next;
+      } else {
+        current = current.next;
+      }
+    }
+    return this;
+  }
+
+  /**
    * Retrieves the data of the second to last node in this list.
    * - Time: O(?).
    * - Space: O(?).
@@ -372,8 +443,13 @@ const secondThreeList = new SinglyLinkedList().insertAtBackMany([4, 5, 6]);
 const unorderedList = new SinglyLinkedList().insertAtBackMany([
   -5, -10, 4, -3, 6, 1, -7, -2,
 ]);
+// let current = unorderedList.head;
+// while (current.next) {
+//   current = current.next;
+// }
+// current.next = unorderedList.head;
 
-console.log(unorderedList.prepend(9001, 5));
+console.log(unorderedList.removeNegatives());
 console.log(unorderedList.toArr());
 
 /* node 4 connects to node 1, back to head */

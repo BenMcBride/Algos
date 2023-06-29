@@ -11,6 +11,40 @@ class Queue {
   }
 
   /**
+   * Determines whether the sum of the left half of the queue items is equal to
+   * the sum of the right half. Avoid indexing the queue items directly via
+   * bracket notation, use the queue methods instead for practice.
+   * Use no extra array or objects.
+   * The queue should be returned to it's original order when done.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @returns {boolean} Whether the sum of the left and right halves is equal.
+   */
+  isSumOfHalvesEqual() {
+    if (this.isPalindrome()) {
+      return true;
+    }
+    let sum1 = 0;
+    let sum2 = 0;
+    const halfSize = Math.floor(this.length / 2);
+    let count = 0;
+    let current = this.head;
+    while (count < halfSize) {
+      sum1 += current.data;
+      current = current.next;
+      count++;
+    }
+    if (this.length % 2 !== 0) {
+      current = current.next;
+    }
+    while (current !== null) {
+      sum2 += current.data;
+      current = current.next;
+    }
+    return sum1 === sum2;
+  }
+
+  /**
    * Compares this queue to another given queue to see if they are equal.
    * Avoid indexing the queue items directly via bracket notation, use the
    * queue methods instead for practice.
@@ -226,15 +260,13 @@ queue.enqueue(12);
 queue.enqueue(13);
 const queue2 = new Queue();
 queue2.enqueue(11);
-queue2.enqueue(12);
 queue2.enqueue(14);
-console.log(queue.compareQueues(queue2));
+queue2.enqueue(14);
 console.log("---");
 queue2.enqueue(12);
-queue2.enqueue(11);
-console.log(queue.items);
+queue2.enqueue(13);
 console.log(queue2.items);
-console.log(queue.isPalindrome());
+console.log(queue2.isSumOfHalvesEqual());
 console.log(queue2.isPalindrome());
 // // LinkedQueue tests
 // const linkedQueue = new LinkedQueue();

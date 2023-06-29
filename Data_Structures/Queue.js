@@ -1,3 +1,5 @@
+const Stack = require("./Stack");
+
 /**
  * Class to represent a queue using an array to store the queued items.
  * Follows a FIFO (First In First Out) order where new items are added to the
@@ -6,6 +8,66 @@
 class Queue {
   constructor() {
     this.items = [];
+  }
+
+  /**
+   * Compares this queue to another given queue to see if they are equal.
+   * Avoid indexing the queue items directly via bracket notation, use the
+   * queue methods instead for practice.
+   * Use no extra array or objects.
+   * The queues should be returned to their original order when done.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {Queue} q2 The queue to be compared against this queue.
+   * @returns {boolean} Whether all the items of the two queues are equal and
+   *    in the same order.
+   */
+  compareQueues(q2) {
+    if (this.size() !== q2.size()) {
+      return false;
+    }
+    let isEqual = true;
+    for (let i = 0; i < this.size(); i++) {
+      const item1 = this.dequeue();
+      const item2 = q2.dequeue();
+      if (item1 !== item2) {
+        isEqual = false;
+      }
+      this.enqueue(item1);
+      q2.enqueue(item2);
+    }
+    return isEqual;
+  }
+
+  /**
+   * Determines if the queue is a palindrome (same items forward and backwards).
+   * Avoid indexing queue items directly via bracket notation, instead use the
+   * queue methods for practice.
+   * Use only 1 stack as additional storage, no other arrays or objects.
+   * The queue should be returned to its original order when done.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @returns {boolean}
+   */
+  isPalindrome() {
+    if (this.isEmpty()) {
+      return false;
+    }
+    const stack = new Stack();
+    for (let i = 0; i < this.size(); i++) {
+      const item = this.dequeue();
+      stack.push(item);
+      this.enqueue(item);
+    }
+    for (let i = 0; i < this.size(); i++) {
+      const queueItem = this.dequeue();
+      const stackItem = stack.pop();
+      if (queueItem !== stackItem) {
+        return false;
+      }
+      this.enqueue(queueItem);
+    }
+    return true;
   }
 
   /**
@@ -159,28 +221,31 @@ class Node {
 
 // Queue tests
 const queue = new Queue();
-console.log("isEmpty: " + queue.isEmpty());
-console.log("size: " + queue.size());
 queue.enqueue(11);
 queue.enqueue(12);
 queue.enqueue(13);
-console.log("front: " + queue.front());
-console.log("dequeue: " + queue.dequeue());
-console.log("front: " + queue.front());
-console.log("size: " + queue.size());
-console.log("isEmpty: " + queue.isEmpty());
+const queue2 = new Queue();
+queue2.enqueue(11);
+queue2.enqueue(12);
+queue2.enqueue(14);
+console.log(queue.compareQueues(queue2));
 console.log("---");
+queue2.enqueue(12);
+queue2.enqueue(11);
+console.log(queue.items);
+console.log(queue2.items);
+console.log(queue.isPalindrome());
+console.log(queue2.isPalindrome());
+// // LinkedQueue tests
+// const linkedQueue = new LinkedQueue();
 
-// LinkedQueue tests
-const linkedQueue = new LinkedQueue();
-
-console.log("isEmpty: " + linkedQueue.isEmpty());
-console.log("size: " + linkedQueue.size());
-linkedQueue.enqueue(11);
-linkedQueue.enqueue(12);
-linkedQueue.enqueue(13);
-console.log("front: " + linkedQueue.front());
-console.log("dequeue: " + linkedQueue.dequeue());
-console.log("front: " + linkedQueue.front());
-console.log("size: " + linkedQueue.size());
-console.log("isEmpty: " + linkedQueue.isEmpty());
+// console.log("isEmpty: " + linkedQueue.isEmpty());
+// console.log("size: " + linkedQueue.size());
+// linkedQueue.enqueue(11);
+// linkedQueue.enqueue(12);
+// linkedQueue.enqueue(13);
+// console.log("front: " + linkedQueue.front());
+// console.log("dequeue: " + linkedQueue.dequeue());
+// console.log("front: " + linkedQueue.front());
+// console.log("size: " + linkedQueue.size());
+// console.log("isEmpty: " + linkedQueue.isEmpty());

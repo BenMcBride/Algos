@@ -22,8 +22,8 @@ class Stack {
    * @returns {number} The new length of this stack.
    */
   push(item) {
-    this.items[this.items.length] = item;
-    return this.items.length;
+    this.items.push(item);
+    return this.size();
   }
 
   /**
@@ -33,12 +33,7 @@ class Stack {
    * @returns {any} The removed item or undefined if this stack was empty.
    */
   pop() {
-    if (this.isEmpty()) {
-      return undefined;
-    }
-    const lastItem = this.items[this.items.length - 1];
-    this.items.length--;
-    return lastItem;
+    return this.items.pop();
   }
 
   /**
@@ -48,9 +43,6 @@ class Stack {
    * @returns {any} The top / last item of this stack.
    */
   peek() {
-    if (this.isEmpty()) {
-      return undefined;
-    }
     return this.items[this.items.length - 1];
   }
 
@@ -74,6 +66,8 @@ class Stack {
     return this.items.length;
   }
 }
+
+//EXTRA: Recreate the stack functionality with a linked list
 
 class StackNode {
   constructor(data) {
@@ -160,30 +154,4 @@ class LinkedListStack {
   }
 }
 
-const stack = new Stack();
-
-console.log(stack.isEmpty());
-
-stack.push(10);
-stack.push(11);
-stack.push(12);
-
-console.log(stack.size());
-console.log(stack.peek());
-console.log(stack.pop());
-console.log(stack.peek());
-console.log(stack.isEmpty());
-console.log(stack.size());
-
-const node1 = new StackNode(10);
-const node2 = new StackNode(11);
-const node3 = new StackNode(12);
-node1.next = node2;
-node2.next = node3;
-
-const linkedListStack = new LinkedListStack();
-linkedListStack.head = node1;
-
-console.log(linkedListStack.head.data);
-console.log(linkedListStack.head.next.data);
-console.log(linkedListStack.head.next.next.data);
+module.exports = Stack;

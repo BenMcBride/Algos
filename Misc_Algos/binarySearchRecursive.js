@@ -32,18 +32,18 @@ const expected3 = true;
  */
 function binarySearch(sortedNums, target) {
   if(sortedNums.length == 1 && sortedNums[0]==target){
-      return true
+    return true
   }
   if(sortedNums.length == 1 && sortedNums[0]!=target){
-      return false
+    return false
   }
   if(sortedNums[Math.floor(sortedNums.length/2)] == target){
-      return true
+    return true
   }
   else if(target > sortedNums[Math.floor(sortedNums.length/2)]){
-      sortedNums.splice(0, sortedNums.length/2)
+    sortedNums.splice(0, sortedNums.length/2)
   }else{
-      sortedNums.splice(sortedNums.length/2, sortedNums.length)
+    sortedNums.splice(sortedNums.length/2, sortedNums.length)
   }
   return binarySearch(sortedNums,target)
 }
